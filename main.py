@@ -12,7 +12,12 @@ class CityInfo:
         self.city_name = city
 
     def data_printer(self):
-        city_data = self.get_city_data()
+        """
+        This method is responsible for extracting and printing data received from the api.
+        If there are more than one city  with provided name all the existing cities will be printed. In that case,
+        program will sleep for one second to avoid api per-second request limit
+        """
+        city_data: list = self.get_city_data()
         for city in city_data:
             city_name: str = city['name']
             country_id: str = city['country']
@@ -24,6 +29,10 @@ class CityInfo:
             time.sleep(1)
 
     def get_city_data(self) -> list:
+        """
+        This method gets data about city such as name, country_id and population from api and returns it.
+        :return: list with data about city
+        """
         api_url_city_data: str = f'https://api.api-ninjas.com/v1/city?name={self.city_name}&limit=10'
         headers: dict = {'X-Api-Key': 'LXnesvgw4/s+HoOfKMiLOw==42pTLnXxmPKv0KCi'}
         response_city_data = requests.get(api_url_city_data, headers=headers)
@@ -42,6 +51,11 @@ class CityInfo:
 
     @staticmethod
     def get_currency_data(country_id):
+        """
+        This method is called by data_printer method and takes alpha-2 country code as a parameter
+        :param country_id: country code ISO 3166-1 alpha-2 gotten from the get_city_data method
+        :return: currency of the provided country
+        """
         api_url_currency_data: str = "https://wft-geo-db.p.rapidapi.com/v1/locale/currencies"
         querystring: dict = {"countryId": country_id}
         headers: dict = {
