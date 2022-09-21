@@ -29,17 +29,19 @@ class CityInfo:
         response_city_data = requests.get(api_url_city_data, headers=headers)
         if response_city_data.status_code == requests.codes.ok:
             raw_city_data = response_city_data.json()
-            if not raw_city_data:
+            if raw_city_data:
+                return raw_city_data
+            else:
                 print(self.print_decorator_upper)
                 print(f"Invalid city name: {self.city_name}")
                 print(self.print_decorator_lower)
                 raise SystemExit(1)
-            return raw_city_data
         else:
             print("Error:", response_city_data.status_code, response_city_data.text)
             raise SystemExit(1)
 
-    def get_currency_data(self, country_id):
+    @staticmethod
+    def get_currency_data(country_id):
         api_url_currency_data = "https://wft-geo-db.p.rapidapi.com/v1/locale/currencies"
         querystring = {"countryId": country_id}
         headers = {
@@ -50,10 +52,15 @@ class CityInfo:
         response_currency = requests.request("GET", api_url_currency_data, headers=headers, params=querystring)
         if response_currency.status_code == requests.codes.ok:
             raw_currency_data = response_currency.json()
-            currency = raw_currency_data['data'][0]['code']
-            return currency
+            if raw_currency_data:
+                currency = raw_currency_data['data'][0]['code']
+                return currency
+            else:
+                print("En empty response from API. Program will be terminated")
+                raise SystemExit(1)
         else:
             print("Error:", response_currency.status_code, response_currency.text)
+            raise SystemExit(1)
 
 
 @click.command()
