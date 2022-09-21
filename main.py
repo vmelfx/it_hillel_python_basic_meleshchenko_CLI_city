@@ -15,7 +15,7 @@ class CityInfo:
         """
         This method is responsible for extracting and printing data received from the api.
         If there are more than one city  with provided name all the existing cities will be printed. In that case,
-        program will sleep for one second to avoid api per-second request limit
+        program will sleep for two seconds to avoid api per-second request limit
         """
         city_data: list = self.get_city_data()
         for city in city_data:
@@ -26,7 +26,7 @@ class CityInfo:
             currency: str = self.get_currency_data(country_id)
             print(f'{self.print_decorator_upper}\n{city_name}\n\n{full_country_name}\n{currency}\n{population}\n'
                   f'{self.print_decorator_lower}')
-            time.sleep(1)
+            time.sleep(2)
 
     def get_city_data(self) -> list:
         """
