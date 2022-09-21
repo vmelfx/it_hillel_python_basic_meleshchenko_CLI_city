@@ -14,21 +14,21 @@ class CityInfo:
     def data_printer(self):
         city_data = self.get_city_data()
         for city in city_data:
-            city_name = city['name']
-            country_id = city['country']
-            population = city['population']
-            full_country_name = pycountry_convert.country_alpha2_to_country_name(city['country'])
-            currency = self.get_currency_data(country_id)
+            city_name: str = city['name']
+            country_id: str = city['country']
+            population: str = city['population']
+            full_country_name: str = pycountry_convert.country_alpha2_to_country_name(city['country'])
+            currency: str = self.get_currency_data(country_id)
             print(f'{self.print_decorator_upper}\n{city_name}\n\n{full_country_name}\n{currency}\n{population}\n'
                   f'{self.print_decorator_lower}')
             time.sleep(1)
 
-    def get_city_data(self):
-        api_url_city_data = f'https://api.api-ninjas.com/v1/city?name={self.city_name}&limit=10'
-        headers = {'X-Api-Key': 'LXnesvgw4/s+HoOfKMiLOw==42pTLnXxmPKv0KCi'}
+    def get_city_data(self) -> list:
+        api_url_city_data: str = f'https://api.api-ninjas.com/v1/city?name={self.city_name}&limit=10'
+        headers: dict = {'X-Api-Key': 'LXnesvgw4/s+HoOfKMiLOw==42pTLnXxmPKv0KCi'}
         response_city_data = requests.get(api_url_city_data, headers=headers)
         if response_city_data.status_code == requests.codes.ok:
-            raw_city_data = response_city_data.json()
+            raw_city_data: list = response_city_data.json()
             if raw_city_data:
                 return raw_city_data
             else:
@@ -42,9 +42,9 @@ class CityInfo:
 
     @staticmethod
     def get_currency_data(country_id):
-        api_url_currency_data = "https://wft-geo-db.p.rapidapi.com/v1/locale/currencies"
-        querystring = {"countryId": country_id}
-        headers = {
+        api_url_currency_data: str = "https://wft-geo-db.p.rapidapi.com/v1/locale/currencies"
+        querystring: dict = {"countryId": country_id}
+        headers: dict = {
             "X-RapidAPI-Key": "9478f173abmsh1a465559722e723p10a0b1jsne9a876bb5e93",
             "X-RapidAPI-Host": "wft-geo-db.p.rapidapi.com"
         }
@@ -53,7 +53,7 @@ class CityInfo:
         if response_currency.status_code == requests.codes.ok:
             raw_currency_data = response_currency.json()
             if raw_currency_data:
-                currency = raw_currency_data['data'][0]['code']
+                currency: str = raw_currency_data['data'][0]['code']
                 return currency
             else:
                 print("En empty response from API. Program will be terminated")
