@@ -8,10 +8,10 @@ class CityInfo:
     print_decorator_upper = "--------------"
     print_decorator_lower = "=============="
 
-    def __init__(self, city):
+    def __init__(self, city) -> None:
         self.city_name = city
 
-    def data_printer(self):
+    def data_printer(self) -> None:
         """
         This method is responsible for extracting and printing data received from the api.
         If there are more than one city  with provided name all the existing cities will be printed. In that case,
@@ -50,7 +50,7 @@ class CityInfo:
             raise SystemExit(1)
 
     @staticmethod
-    def get_currency_data(country_id):
+    def get_currency_data(country_id) -> str:
         """
         This method is called by data_printer method and takes alpha-2 country code as a parameter
         :param country_id: country code ISO 3166-1 alpha-2 gotten from the get_city_data method
